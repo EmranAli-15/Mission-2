@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.StudentModel = void 0;
 const mongoose_1 = require("mongoose");
 const userNameSchema = new mongoose_1.Schema({
     firstName: { type: String, required: true },
@@ -36,4 +37,4 @@ const studentSchema = new mongoose_1.Schema({
     profileImg: { type: String },
     isActive: ["active", "blocked"],
 });
-const Student = (0, mongoose_1.model)('Stud', studentSchema);
+exports.StudentModel = (0, mongoose_1.model)('Student', studentSchema);
