@@ -25,6 +25,35 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         console.log(error);
     }
 });
+const getAllStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield student_service_1.StudentService.getAllStudentsFromDB();
+        res.status(200).json({
+            success: true,
+            message: 'Students are retrieved successfully',
+            data: result,
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+const getAStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const studentId = req.params.studentId;
+        const result = yield student_service_1.StudentService.getAStudentFromDB(studentId);
+        res.status(200).json({
+            success: true,
+            message: 'Student retrieved successfully',
+            data: result,
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
 exports.StudentControllers = {
     createStudent,
+    getAllStudents,
+    getAStudent
 };

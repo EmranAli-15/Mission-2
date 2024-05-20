@@ -15,6 +15,16 @@ const createStudentIntoDB = (student) => __awaiter(void 0, void 0, void 0, funct
     const result = yield student_model_1.StudentModel.create(student);
     return result;
 });
+const getAllStudentsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield student_model_1.StudentModel.find();
+    return result;
+});
+const getAStudentFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield student_model_1.StudentModel.findOne({ id: id });
+    return result;
+});
 exports.StudentService = {
     createStudentIntoDB,
+    getAllStudentsFromDB,
+    getAStudentFromDB,
 };
