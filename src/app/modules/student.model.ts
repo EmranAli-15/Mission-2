@@ -1,31 +1,11 @@
 import { Schema, model, connect } from 'mongoose';
-import validator from 'validator';
 import { Guardian, LocalGuardian, Student, UserName } from './student/student.interface';
 
 const userNameSchema = new Schema<UserName>(
     {
-        firstName: {
-            type: String,
-            required: [true, 'First Name is required'],
-            validate: {
-                validator: function (str: string) {
-                    const firstNameStr = str.charAt(0).toUpperCase() + str.slice(1);
-                    return firstNameStr === str;
-                },
-                message: "{VALUE} is not required format"
-            }
-        },
-        middleName: { type: String },
-        lastName: { 
-            type: String, 
-            required: true,
-            validate: {
-                validator: function(str:string) {
-                    return validator.isAlpha(str);
-                },
-                message: "{VALUE} is thik nai vai"
-            }
-        },
+        firstName: { type: String, required: true },
+        middleName: { type: String, required: true },
+        lastName: { type: String, required: true },
     }
 );
 

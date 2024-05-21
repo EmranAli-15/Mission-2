@@ -18,7 +18,7 @@ const createStudent = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Student is created successfully',
+            message: 'Something went wring!!',
             data: error,
         })
     }
