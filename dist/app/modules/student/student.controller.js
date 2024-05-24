@@ -11,10 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentControllers = void 0;
 const student_service_1 = require("./student.service");
+const student_validation_zod_1 = require("./student.validation.zod");
 const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const student = req.body.student;
-        const result = yield student_service_1.StudentService.createStudentIntoDB(student);
+        const zodParseData = student_validation_zod_1.studentValidationSchema.parse(student);
+        const result = yield student_service_1.StudentService.createStudentIntoDB(zodParseData);
         res.status(200).json({
             success: true,
             message: 'Student is created successfully',
@@ -22,7 +24,11 @@ const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
     catch (error) {
-        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'Something went wring!!',
+            data: error,
+        });
     }
 });
 const getAllStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
