@@ -13,7 +13,7 @@ const academicSemesterSchema = new Schema<AcademicSemester>({
         required: true
     },
     year: {
-        type: Date,
+        type: String,
         required: true
     },
     startMonth: {
@@ -31,4 +31,4 @@ const academicSemesterSchema = new Schema<AcademicSemester>({
         timestamps: true
     });
 
-const AcademicSemester = model<AcademicSemester>('academicSemester', academicSemesterSchema);
+export const AcademicSemesterModel = model<AcademicSemester>('academicSemester', academicSemesterSchema);
