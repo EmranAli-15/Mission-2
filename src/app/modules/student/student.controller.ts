@@ -1,11 +1,9 @@
-import { Request, Response } from "express";
 import { StudentService } from "./student.service";
-import { studentValidationSchema } from "./student.validation.zod";
+import catchAsync from "../../utils/catchAsync";
 
 
-
-const getAllStudents = async (req: Request, res: Response) => {
-    try {
+const getAllStudents = catchAsync(
+    async (req, res) => {
         const result = await StudentService.getAllStudentsFromDB();
 
         res.status(200).json({
@@ -13,13 +11,11 @@ const getAllStudents = async (req: Request, res: Response) => {
             message: 'Students are retrieved successfully',
             data: result,
         })
-    } catch (error) {
-        console.log(error);
     }
-};
+);
 
-const getAStudent = async (req: Request, res: Response) => {
-    try {
+const getAStudent = catchAsync(
+    async (req, res) => {
         const studentId = req.params.studentId;
         const result = await StudentService.getAStudentFromDB(studentId);
 
@@ -28,10 +24,7 @@ const getAStudent = async (req: Request, res: Response) => {
             message: 'Student retrieved successfully',
             data: result,
         })
-    } catch (error) {
-        console.log(error);
-    }
-}
+    })
 
 export const StudentControllers = {
     getAllStudents,
