@@ -1,6 +1,4 @@
-import { AcademicSemester } from "../academicSemester/academicSemester.interface";
 import { User } from "./user.model";
-
 
 const findLastStudentId = async () => {
     const lastStudent = await User.findOne(
@@ -16,8 +14,6 @@ const findLastStudentId = async () => {
             createdAt: -1,
         })
         .lean();
-
-    //203001   0001
     return lastStudent?.id ? lastStudent.id.substring(6) : undefined;
 };
 
