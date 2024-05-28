@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Error, Schema, model } from "mongoose";
 import { AcademicSemester } from "./academicSemester.interface";
 
 const academicSemesterSchema = new Schema<AcademicSemester>({
@@ -30,5 +30,16 @@ const academicSemesterSchema = new Schema<AcademicSemester>({
     {
         timestamps: true
     });
+
+academicSemesterSchema.pre('save', async function (next) {
+    const isSemesterExists = await AcademicSemesterModel.findOne({
+        year: this.year,
+        name: this.name
+    });
+    if (isSemesterExists) {
+        throw new Error('Semester is already exist !');
+    };
+    next();
+})
 
 export const AcademicSemesterModel = model<AcademicSemester>('academicSemester', academicSemesterSchema);
