@@ -5,9 +5,8 @@ import { StudentRoutes } from './app/modules/student/student.route';
 import { UserRoutes } from './app/modules/user/user.route';
 import { globalErrorHandler } from './app/middlewares/globalErrorHandler';
 import { AcademicSemesterRoutes } from './app/modules/academicSemester/academicSemester.route';
+import { academicFacultyRoutes } from './app/modules/academicFaculty/academicFaculty.route';
 const app = express();
-
-console.log(process.cwd());
 
 app.use(express.json());
 app.use(cors());
@@ -20,6 +19,8 @@ app.use(cors());
 app.use('/api/v1/students', StudentRoutes);
 app.use('/api/v1/users', UserRoutes);
 app.use('/api/v1/academic-semester', AcademicSemesterRoutes);
+app.use('/api/v1/academic-faculty', academicFacultyRoutes);
+
 // //////////////////////////////////////////////////////
 
 
