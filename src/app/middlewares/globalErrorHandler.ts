@@ -5,7 +5,7 @@ const globalErrorHandler = (error: any, req: Request, res: Response, next: NextF
     const message = 'something went wrong!';
     return res.status(statusCode).json({
         success: false,
-        message: message || error.message,
+        message: error.message || message,
         error: error,
     })
 };

@@ -46,9 +46,9 @@ const updateSemesterIntoDB = async (id: string, semester: Partial<AcademicSemest
         semester.name &&
         semester.code &&
         semesterCodeMapper[semester.name] !== semester.code
-      ) {
+    ) {
         throw new Error('Invalid Semester Code');
-      }
+    }
 
     const result = await AcademicSemesterModel.findOneAndUpdate({ _id: id }, semester, {
         new: true,
