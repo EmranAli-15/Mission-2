@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { academicDepartmentInterface } from "./academicDepartment.interface";
+import AppError from "../../errors/AppError";
 
 const academicDepartmentSchema = new Schema<academicDepartmentInterface>({
     name: {
@@ -34,7 +35,7 @@ academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
     const isDepartmentExist = await academicDepartmentModel.findOne(query);
 
     if (!isDepartmentExist) {
-        throw new Error('This department dose not exist!');
+        throw new AppError(404, 'This department dose not exist!');
     };
     next();
 })
