@@ -3,6 +3,7 @@ import { StudentModel } from "./student.model";
 import AppError from "../../errors/AppError";
 import { User } from "../user/user.model";
 import { Student } from "./student.interface";
+import { number } from "zod";
 
 const getAllStudentsFromDB = async (query: any) => {
     const studentSearchableFields = ['email', 'name.firstName', 'presentAddress'];
@@ -18,7 +19,7 @@ const getAllStudentsFromDB = async (query: any) => {
         }))
     });
 
-    const excludeFields = ['searchTerm', 'sort', 'limit'];
+    const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
 
     excludeFields.forEach((el) => {
         return delete queryObj[el];
@@ -36,16 +37,34 @@ const getAllStudentsFromDB = async (query: any) => {
 
     const sortQuery = filterQuery.sort(sort);
 
+    let page = 1;
+    let skip = 0;
     let limit = 1;
+
     if(query.limit){
-        limit = query.limit;
+        limit = Number(query.limit);
     };
 
-    const limitQuery = sortQuery.limit(limit);
+    if(query.page){
+        page = Number(query.page);
+        skip = Number((page-1)*limit);
+    };
 
+    const paginateQuery = sortQuery.skip(skip);
 
+    
 
-    return limitQuery;
+    const limitQuery = paginateQuery.limit(limit);
+
+    let fields = '__v';
+
+    if(query.fields){
+        fields=(query.fields as string).split(',').join(' ');
+    };
+
+    const fieldQuery = await limitQuery.select(fields);
+
+    return fieldQuery;
 };
 
 const getAStudentFromDB = async (id: string) => {
