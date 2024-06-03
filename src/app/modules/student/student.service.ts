@@ -4,12 +4,48 @@ import AppError from "../../errors/AppError";
 import { User } from "../user/user.model";
 import { Student } from "./student.interface";
 
-const getAllStudentsFromDB = async () => {
-    const result = await StudentModel.find().populate('admissionSemester').populate({
+const getAllStudentsFromDB = async (query: any) => {
+    const studentSearchableFields = ['email', 'name.firstName', 'presentAddress'];
+    const queryObj = { ...query };
+    let searchTerm = '';
+    if (query?.searchTerm) {
+        searchTerm = query?.searchTerm;
+    };
+
+    const searchQuery = StudentModel.find({
+        $or: studentSearchableFields.map((field) => ({
+            [field]: { $regex: searchTerm, $options: 'i' }
+        }))
+    });
+
+    const excludeFields = ['searchTerm', 'sort', 'limit'];
+
+    excludeFields.forEach((el) => {
+        return delete queryObj[el];
+    });
+
+    const filterQuery = searchQuery.find(queryObj).populate('admissionSemester').populate({
         path: 'academicDepartment',
         populate: 'academicFaculty',
     });
-    return result;
+
+    let sort = '-1';
+    if(query.sort){
+        sort = query.sort;
+    };
+
+    const sortQuery = filterQuery.sort(sort);
+
+    let limit = 1;
+    if(query.limit){
+        limit = query.limit;
+    };
+
+    const limitQuery = sortQuery.limit(limit);
+
+
+
+    return limitQuery;
 };
 
 const getAStudentFromDB = async (id: string) => {
