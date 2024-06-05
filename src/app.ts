@@ -7,6 +7,7 @@ import { globalErrorHandler } from './app/middlewares/globalErrorHandler';
 import { AcademicSemesterRoutes } from './app/modules/academicSemester/academicSemester.route';
 import { academicFacultyRoutes } from './app/modules/academicFaculty/academicFaculty.route';
 import { academicDepartmentRoutes } from './app/modules/academicDepartment/academicDepartment.route';
+import { courseRoutes } from './app/modules/course/course.route';
 const app = express();
 
 app.use(express.json());
@@ -22,6 +23,7 @@ app.use('/api/v1/users', UserRoutes);
 app.use('/api/v1/academic-semester', AcademicSemesterRoutes);
 app.use('/api/v1/academic-faculty', academicFacultyRoutes);
 app.use('/api/v1/academic-department', academicDepartmentRoutes);
+app.use('/api/v1/course', courseRoutes);
 
 // //////////////////////////////////////////////////////
 
