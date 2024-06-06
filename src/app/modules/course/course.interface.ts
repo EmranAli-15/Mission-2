@@ -10,6 +10,6 @@ export type courseInterface = {
     prefix: string;
     code: number;
     credits: number;
-    preRequisiteCourses: [],
+    preRequisiteCourses: [preRequisiteCourses],
     isDeleted?: boolean,
 }

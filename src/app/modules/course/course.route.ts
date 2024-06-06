@@ -13,6 +13,6 @@ router.get('/', courseControllers.getAllCourses);
 
 router.delete('/:id', courseControllers.deleteCourse);
 
-router.patch('/:id', courseControllers.updateCourse);
+router.patch('/:id',validateRequest(courseValidations.updateCourseValidationSchema), courseControllers.updateCourse);
 
 export const courseRoutes = router;

@@ -56,8 +56,7 @@ const updateCourse = catchAsync(
     async (req, res) => {
         const { id } = req.params;
         const body = req.body;
-        let result;
-        // const result = await courseServices.deleteCourseFromDB()
+        const result = await courseServices.updateCourseIntoDB(id, body);
 
         res.status(200).json({
             success: true,
