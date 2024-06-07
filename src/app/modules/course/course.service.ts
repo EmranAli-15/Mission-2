@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { courseSearchableFields } from "./course.constant";
-import { courseInterface } from "./course.interface";
-import { courseModel } from "./course.model"
+import { courseFacultyInterface, courseInterface } from "./course.interface";
+import { courseFacultyModel, courseModel } from "./course.model"
 import AppError from "../../errors/AppError";
 
 const createCourseIntoDB = async (payload: courseInterface) => {
@@ -105,10 +105,42 @@ const updateCourseIntoDB = async (id: string, payload: Partial<courseInterface>)
     }
 
 
-}
+};
 
 const deleteCourseFromDB = async (id: string) => {
     const result = await courseModel.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
+    return result;
+};
+
+const assignFacultiesWithIntoDB = async (id: string, payload: Partial<courseFacultyInterface>) => {
+    const result = await courseFacultyModel.findByIdAndUpdate(
+        id,
+        {
+            course: id,
+            $addToSet: {
+                faculties: { $each: payload }
+            }
+        },
+        {
+            upsert: true,
+            new: true
+        });
+
+    return result;
+};
+
+const removeFacultiesFromDB = async (id: string, payload: Partial<courseFacultyInterface>) => {
+    const result = await courseFacultyModel.findByIdAndUpdate(
+        id,
+        {
+            $pull: {
+                faculties: { $in: payload }
+            }
+        },
+        {
+            new: true
+        });
+
     return result;
 };
 
@@ -117,5 +149,7 @@ export const courseServices = {
     getAllCoursesFromDB,
     getSingleCourseFromDB,
     updateCourseIntoDB,
-    deleteCourseFromDB
+    deleteCourseFromDB,
+    assignFacultiesWithIntoDB,
+    removeFacultiesFromDB
 };

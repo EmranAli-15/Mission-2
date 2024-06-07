@@ -13,3 +13,8 @@ export type courseInterface = {
     preRequisiteCourses: [preRequisiteCourses],
     isDeleted?: boolean,
 }
+
+export type courseFacultyInterface = {
+    course: Types.ObjectId;
+    faculties: [Types.ObjectId];
+}
