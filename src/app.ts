@@ -9,6 +9,7 @@ import { academicFacultyRoutes } from './app/modules/academicFaculty/academicFac
 import { academicDepartmentRoutes } from './app/modules/academicDepartment/academicDepartment.route';
 import { courseRoutes } from './app/modules/course/course.route';
 import { semesterRegistrationRoutes } from './app/modules/semesterRegistration/semesterRegistration.route';
+import { offeredCourseRoutes } from './app/modules/offeredCourse/offeredCourse.route';
 const app = express();
 
 app.use(express.json());
@@ -26,6 +27,7 @@ app.use('/api/v1/academic-faculty', academicFacultyRoutes);
 app.use('/api/v1/academic-department', academicDepartmentRoutes);
 app.use('/api/v1/course', courseRoutes);
 app.use('/api/v1/semester-registration', semesterRegistrationRoutes)
+app.use('/api/v1/offered-course', offeredCourseRoutes);
 
 // //////////////////////////////////////////////////////
 
