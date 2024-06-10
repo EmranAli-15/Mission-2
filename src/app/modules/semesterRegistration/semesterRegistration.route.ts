@@ -6,4 +6,10 @@ const route = express.Router();
 
 route.post('/', validateRequest(semesterRegisterValidation.createSemesterRegistrationValidation), semesterRegistrationControllers.createSemesterRegistration);
 
+route.get('/', semesterRegistrationControllers.getAllSemesterRegistrations);
+
+route.get('/:id', semesterRegistrationControllers.getSingleSemesterRegistration);
+
+route.patch('/:id', validateRequest(semesterRegisterValidation.updateSemesterRegistrationValidation), semesterRegistrationControllers.updateSemesterRegistration)
+
 export const semesterRegistrationRoutes = route;
