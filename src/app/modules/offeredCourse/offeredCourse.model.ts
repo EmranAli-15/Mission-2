@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
 import { offeredCourseInterface } from "./offeredCourse.interface";
-import { number } from "zod";
 
 const offeredCourseSchema = new Schema<offeredCourseInterface>({
     semesterRegistration: {
@@ -41,10 +40,10 @@ const offeredCourseSchema = new Schema<offeredCourseInterface>({
         type: Number,
         required: true
     },
-    days: {
+    days: [{
         type: String,
         enum: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']
-    },
+    }],
     startTime: {
         type: String,
         required: true

@@ -10,7 +10,7 @@ const createOfferedCourseValidationSchema = z.object({
         faculty: z.string(),
         maxCapacity: z.number(),
         section: z.number(),
-        days: z.enum(['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']),
+        days: z.array(z.enum(['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'])),
         startTime: z.string(),
         endTime: z.string()
     })
