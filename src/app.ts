@@ -10,6 +10,7 @@ import { academicDepartmentRoutes } from './app/modules/academicDepartment/acade
 import { courseRoutes } from './app/modules/course/course.route';
 import { semesterRegistrationRoutes } from './app/modules/semesterRegistration/semesterRegistration.route';
 import { offeredCourseRoutes } from './app/modules/offeredCourse/offeredCourse.route';
+import { authRoutes } from './app/modules/auth/auth.route';
 const app = express();
 
 app.use(express.json());
@@ -28,6 +29,7 @@ app.use('/api/v1/academic-department', academicDepartmentRoutes);
 app.use('/api/v1/course', courseRoutes);
 app.use('/api/v1/semester-registration', semesterRegistrationRoutes)
 app.use('/api/v1/offered-course', offeredCourseRoutes);
+app.use('/api/v1/auth', authRoutes);
 
 // //////////////////////////////////////////////////////
 

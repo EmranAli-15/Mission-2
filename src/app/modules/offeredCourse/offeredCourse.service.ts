@@ -8,7 +8,7 @@ import { offeredCourseInterface } from "./offeredCourse.interface";
 import { offeredCourseModel } from "./offeredCourse.model";
 
 const createOfferedCourseIntoDB = async (payload: offeredCourseInterface) => {
-    const { semesterRegistration, academicSemester, academicDepartment, academicFaculty, course, faculty, section } = payload;
+    const { semesterRegistration, academicSemester, academicDepartment, academicFaculty, course, faculty, section, days, startTime, endTime } = payload;
 
     const isSemesterRegistrationExist = await semesterRegistrationModel.findById(semesterRegistration);
     if (!isSemesterRegistrationExist) {
@@ -61,12 +61,40 @@ const createOfferedCourseIntoDB = async (payload: offeredCourseInterface) => {
         section
     });
 
-    if(isOfferedCourseExistWithSameSemesterRegistrationAndSection){
+    if (isOfferedCourseExistWithSameSemesterRegistrationAndSection) {
         throw new AppError(400, 'The offered course with same section is already exist');
     }
 
-    const result = await offeredCourseModel.create({ ...payload, semesterRegistrationId });
-    return result;
+    // get the schedules of the faculties
+    const assignedSchedules = await offeredCourseModel.find(
+        {
+            semesterRegistration,
+            faculty,
+            days: { $in: days }
+        }
+    ).select('days startTime endTime');
+
+    console.log(assignedSchedules);
+
+    const newSchedule = {
+        days, startTime, endTime
+    };
+
+    assignedSchedules.forEach((schedule) => {
+        const existStartTime = new Date(`1970-01-01T${schedule.startTime}`);
+        const existEndTime = new Date(`1970-01-01T${schedule.endTime}`);
+        const newStartTime = new Date(`1970-01-01T${newSchedule.startTime}`);
+        const newEndTime = new Date(`1970-01-01T${newSchedule.endTime}`);
+
+        if (newStartTime < existEndTime && newEndTime > existStartTime) {
+            throw new AppError(400, 'This faculty is not available at that time! choose another time or date');
+        };
+    })
+
+    // const result = await offeredCourseModel.create({ ...payload, semesterRegistrationId });
+    // return result;
+
+    return null;
 };
 
 const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {

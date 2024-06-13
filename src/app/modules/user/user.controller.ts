@@ -21,7 +21,7 @@ const createAdmin = catchAsync(
 
         res.status(200).json({
             success: true,
-            message: 'Student is created successfully',
+            message: 'Admin is created successfully',
             data: result,
         })
     }
