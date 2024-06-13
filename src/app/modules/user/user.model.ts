@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { TUser } from "./user.interface";
+import { TUser, userModel } from "./user.interface";
 
 const userSchema = new Schema<TUser>({
     id: {
@@ -16,11 +16,11 @@ const userSchema = new Schema<TUser>({
     },
     role: {
         type: String,
-        enum : ['student', 'faculty', 'admin'],
+        enum: ['student', 'faculty', 'admin'],
     },
     status: {
         type: String,
-        enum : ['in-progress', 'blocked'],
+        enum: ['in-progress', 'blocked'],
         default: 'in-progress',
     },
     isDeleted: {
@@ -28,8 +28,14 @@ const userSchema = new Schema<TUser>({
         default: false
     },
 },
-{
-    timestamps: true,
-});
+    {
+        timestamps: true,
+    });
 
-export const User = model<TUser>('User', userSchema);
+
+userSchema.statics.isUserExistsByCustomId = async function (id: string) {
+    return await User.findOne({ id });
+}
+
+
+export const User = model<TUser, userModel>('User', userSchema);
