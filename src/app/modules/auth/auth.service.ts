@@ -2,7 +2,7 @@ import config from "../../config";
 import AppError from "../../errors/AppError";
 import { User } from "../user/user.model";
 import { loginUserInterface } from "./auth.interface";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 const loginUser = async (payload: loginUserInterface) => {
     // check if the user is exist
@@ -18,6 +18,9 @@ const loginUser = async (payload: loginUserInterface) => {
     };
     if (isUserExist?.status === 'blocked') {
         throw new AppError(403, 'User is BLOCKED!');
+    };
+    if (isUserExist?.password !== payload.password) {
+        throw new AppError(403, 'Password not matched!');
     };
 
 
@@ -39,7 +42,54 @@ const loginUser = async (payload: loginUserInterface) => {
     };
 };
 
-const changePassword = async () => {
+const changePassword = async (user: JwtPayload, payload: { oldPassword: string, newPassword: string }) => {
+
+    const isUserExist = await User.findOne({
+        id: user.userId,
+        role: user.role
+    });
+
+    if (!isUserExist) {
+        throw new AppError(400, 'User not FOUNDED!');
+    };
+    if (isUserExist?.isDeleted === true) {
+        throw new AppError(400, 'User is DELETED!');
+    };
+    if (isUserExist?.status === 'blocked') {
+        throw new AppError(403, 'User is BLOCKED!');
+    };
+    if (isUserExist?.password !== payload.oldPassword) {
+        throw new AppError(403, 'Password not matched!');
+    };
+
+    const result = await User.findOneAndUpdate(
+        {
+            id: user.userId,
+            role: user.role
+        },
+        {
+            password: payload.newPassword,
+            needsPasswordChange: false
+        }
+    )
+
+    if (!result) {
+        throw new AppError(403, 'Something went wrong');
+    }
+
+    const jwtPayload = {
+        userId: isUserExist.id,
+        role: isUserExist.role
+    }
+    const accessToken = jwt.sign(
+        jwtPayload,
+        config.jwt_access_secret as string,
+        {
+            expiresIn: '10d'
+        }
+    );
+
+    return null;
 
 }
 
