@@ -21,12 +21,6 @@ const loginUser = async (payload: loginUserInterface) => {
     };
 
 
-    // if (!(await User.isUserExistsByCustomId(payload.id))) {
-    //     throw new AppError(400, 'Admin not FOUNDED!');
-    // }
-
-    // create token and sent to the client
-
     const jwtPayload = {
         userId: isUserExist.id,
         role: isUserExist.role

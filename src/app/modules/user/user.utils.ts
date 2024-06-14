@@ -23,7 +23,6 @@ export const generateStudentId = async (data: any) => {
     const lastStudentId = await findLastStudentId();
     const lastStudentCode = lastStudentId?.substring(4, 6);
     const lastStudentYear = lastStudentId?.substring(0, 4);
-    console.log(lastStudentCode, lastStudentYear);
 
     const currentCode = data.code;
     const currentYear = data.year;
