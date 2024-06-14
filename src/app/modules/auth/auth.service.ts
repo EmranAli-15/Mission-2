@@ -11,13 +11,13 @@ const loginUser = async (payload: loginUserInterface) => {
     });
 
     if (!isUserExist) {
-        throw new AppError(400, 'Admin not FOUNDED!');
+        throw new AppError(400, 'User not FOUNDED!');
     };
     if (isUserExist?.isDeleted === true) {
-        throw new AppError(400, 'Admin is DELETED!');
+        throw new AppError(400, 'User is DELETED!');
     };
     if (isUserExist?.status === 'blocked') {
-        throw new AppError(403, 'Admin is BLOCKED!');
+        throw new AppError(403, 'User is BLOCKED!');
     };
 
 

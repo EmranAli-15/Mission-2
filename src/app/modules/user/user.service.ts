@@ -18,18 +18,15 @@ const createStudentIntoDB = async (password: string, studentData: Student) => {
     userData.role = 'student';
 
     const admissionSemester = await AcademicSemesterModel.findById(studentData.admissionSemester);
-
-
     const session = await mongoose.startSession();
     try {
-
         session.startTransaction();
-        userData.id = await generateStudentId(admissionSemester)
+        userData.id = await generateStudentId(admissionSemester);
 
         const newUser = await User.create([userData], { session });
 
         if (!newUser.length) {
-            throw new AppError(400, 'failed to create user');
+            throw new AppError(400, 'failed to create user 1');
         }
 
         studentData.id = newUser[0].id;
@@ -38,7 +35,7 @@ const createStudentIntoDB = async (password: string, studentData: Student) => {
         const newStudent = await StudentModel.create([studentData], { session });
 
         if (!newStudent.length) {
-            throw new AppError(400, 'failed to create new student');
+            throw new AppError(400, 'failed to create new student 2');
         }
         await session.commitTransaction();
         await session.endSession();
@@ -48,7 +45,7 @@ const createStudentIntoDB = async (password: string, studentData: Student) => {
     } catch (error) {
         await session.abortTransaction();
         await session.endSession();
-        throw new AppError(400, 'failed to create student');
+        throw new AppError(400, 'failed to create student 3');
     }
 };
 
