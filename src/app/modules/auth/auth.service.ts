@@ -39,7 +39,12 @@ const loginUser = async (payload: loginUserInterface) => {
     };
 };
 
+const changePassword = async () => {
+
+}
+
 
 export const authServices = {
     loginUser,
+    changePassword
 }
