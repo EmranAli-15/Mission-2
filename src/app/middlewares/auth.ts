@@ -24,7 +24,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
 
                 const role = (decoded as JwtPayload).role;
 
-                if(requiredRoles && !requiredRoles.includes(role)){
+                if (requiredRoles && !requiredRoles.includes(role)) {
                     throw new AppError(401, 'You are not authorized! gg');
                 }
 
