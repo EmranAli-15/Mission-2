@@ -26,7 +26,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
 
                 if (requiredRoles && !requiredRoles.includes(role)) {
                     throw new AppError(401, 'You are not authorized! gg');
-                }
+                };
 
                 req.user = decoded as JwtPayload;
                 next();

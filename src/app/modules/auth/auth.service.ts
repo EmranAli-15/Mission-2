@@ -97,10 +97,42 @@ const changePassword = async (user: JwtPayload, payload: { oldPassword: string, 
 
     return null;
 
-}
+};
+
+const refreshToken = async (token: string) => {
+    if (!token) {
+        throw new AppError(401, 'You are not a valid user for get access!');
+    };
+
+
+
+    // checking if the token is valid or not
+    const decoded = jwt.verify(token, config.jwt_refresh_secret as string) as JwtPayload;
+
+    const { userId } = decoded;
+
+    const isUserExist = await User.findOne({
+        id: userId
+    });
+
+    const jwtPayload = {
+        userId: isUserExist?.id,
+        role: isUserExist?.role
+    }
+    const accessToken = createToken(
+        jwtPayload,
+        config.jwt_access_secret as string,
+        config.jwt_access_expires_in as string
+    );
+
+    return {
+        accessToken
+    };
+};
 
 
 export const authServices = {
     loginUser,
-    changePassword
+    changePassword,
+    refreshToken
 }
