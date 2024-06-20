@@ -1,3 +1,4 @@
+import { Console } from "console";
 import catchAsync from "../../utils/catchAsync";
 import { academicFacultyServices } from "./academicFaculty.service";
 
@@ -16,6 +17,7 @@ const createAcademicFaculty = catchAsync(
 const getAllAcademicFaculties = catchAsync(
     async (req, res) => {
         const result = await academicFacultyServices.getAllAcademicFacultyFromDB();
+        console.log(req.cookies);
 
         res.status(200).json({
             success: true,

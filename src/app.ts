@@ -1,6 +1,6 @@
 import express from 'express';
-import { Request, Response } from 'express';
 import cors from 'cors';
+import { Request, Response } from 'express';
 import { StudentRoutes } from './app/modules/student/student.route';
 import { UserRoutes } from './app/modules/user/user.route';
 import { globalErrorHandler } from './app/middlewares/globalErrorHandler';
@@ -11,9 +11,11 @@ import { courseRoutes } from './app/modules/course/course.route';
 import { semesterRegistrationRoutes } from './app/modules/semesterRegistration/semesterRegistration.route';
 import { offeredCourseRoutes } from './app/modules/offeredCourse/offeredCourse.route';
 import { authRoutes } from './app/modules/auth/auth.route';
-const app = express();
+import cookieParser from 'cookie-parser';
 
+const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 
 
