@@ -4,6 +4,8 @@ import { User } from "../user/user.model";
 import { loginUserInterface } from "./auth.interface";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import createToken from "./auth.utils";
+import { CLIENT_RENEG_LIMIT } from "tls";
+import sendEmail from "../../utils/sendEmail";
 
 const loginUser = async (payload: loginUserInterface) => {
     // check if the user is exist
@@ -130,9 +132,38 @@ const refreshToken = async (token: string) => {
     };
 };
 
+const forgetPassword = async (id: string) => {
+    const isUserExist = await User.findOne({
+        id: id
+    });
+
+    if (!isUserExist) {
+        throw new AppError(400, 'User not found!');
+    };
+
+    //  Check more is the user deleted/blocked
+
+    const jwtPayload = {
+        userId: isUserExist?.id,
+        role: isUserExist?.role
+    }
+    const resetToken = createToken(
+        jwtPayload,
+        config.jwt_access_secret as string,
+        '10m'
+    );
+
+    const resetUILink = `http://localhost:3000?id=${id}&token=${resetToken}`;
+
+    sendEmail();
+
+    console.log(resetUILink);
+};
+
 
 export const authServices = {
     loginUser,
     changePassword,
-    refreshToken
-}
+    refreshToken,
+    forgetPassword
+};

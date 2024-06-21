@@ -16,6 +16,7 @@ const createStudentIntoDB = async (password: string, studentData: Student) => {
 
     userData.password = password || config.default_pass as string;
     userData.role = 'student';
+    userData.email = studentData.email;
 
     const admissionSemester = await AcademicSemesterModel.findById(studentData.admissionSemester);
     const session = await mongoose.startSession();
@@ -55,6 +56,7 @@ const createAdminIntoDB = async (password: string, adminData: adminInterface) =>
 
     userData.password = password || config.default_pass as string;
     userData.role = 'admin';
+    userData.email = adminData.email;
 
     const session = await mongoose.startSession();
     try {

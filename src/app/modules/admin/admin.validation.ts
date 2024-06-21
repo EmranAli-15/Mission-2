@@ -11,6 +11,7 @@ const adminValidationSchema = z.object({
         admin: z.object({
             name: userNameSchema,
             id: z.string().optional(),
+            email: z.string(),
             gender: z.enum(['male', 'female', 'other']).optional(),
             isDeleted: z.boolean().optional(),
         })

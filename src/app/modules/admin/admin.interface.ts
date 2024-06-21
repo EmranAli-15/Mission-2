@@ -9,6 +9,7 @@ export type adminName = {
 export type adminInterface = {
     user: Types.ObjectId;
     name: adminName;
+    email: string;
     id: string;
     gender: "male" | "female" | "other";
     isDeleted: boolean;
