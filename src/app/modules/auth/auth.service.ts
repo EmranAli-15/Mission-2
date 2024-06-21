@@ -153,17 +153,38 @@ const forgetPassword = async (id: string) => {
         '10m'
     );
 
-    const resetUILink = `http://localhost:3000?id=${id}&token=${resetToken}`;
+    const resetUILink = `${config.reset_pass_ui_link}?id=${id}&token=${resetToken}`;
 
-    sendEmail();
+    sendEmail(isUserExist.email, resetUILink);
 
     console.log(resetUILink);
 };
+
+const resetPassword = async (payload: { id: string, newPassword: string }, token: string) => {
+    const user = await User.findOne({
+        id: payload?.id
+    });
+
+    if (!user) {
+        throw new AppError(400, 'User not found!');
+    };
+
+    const decoded = jwt.verify(token, config.jwt_access_secret as string) as JwtPayload;
+
+    const { userId, role } = decoded;
+
+    if (userId !== payload.id) {
+        throw new AppError(403, 'You are not authorized person!');
+    }
+
+    await User.findOneAndUpdate({ id: payload.id, role: role }, { password: payload.newPassword });
+}
 
 
 export const authServices = {
     loginUser,
     changePassword,
     refreshToken,
-    forgetPassword
+    forgetPassword,
+    resetPassword
 };
