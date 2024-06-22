@@ -46,8 +46,23 @@ const getMe = catchAsync(
     }
 );
 
+const changeStatus = catchAsync(
+    async (req, res, next) => {
+        const { id } = req.params;
+        const { status } = req.body;
+        const result = await UserServices.changeStatus(id, status);
+
+        res.status(200).json({
+            success: true,
+            message: 'status changed successfully!',
+            data: result,
+        })
+    }
+);
+
 export const userControllers = {
     createStudent,
     createAdmin,
-    getMe
+    getMe,
+    changeStatus
 }
