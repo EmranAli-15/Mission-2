@@ -4,8 +4,9 @@ import AppError from "../../errors/AppError";
 
 const createStudent = catchAsync(
     async (req, res, next) => {
+
         const { password, student } = req.body;
-        const result = await UserServices.createStudentIntoDB(password, student);
+        const result = await UserServices.createStudentIntoDB(req.file, password, student);
 
         res.status(200).json({
             success: true,

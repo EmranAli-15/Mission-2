@@ -13,5 +13,7 @@ export default {
     jwt_refresh_secret: process.env.JWT_REFRESH_SECRET,
     jwt_refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
     app_password: process.env.APP_PASSWORD,
-    reset_pass_ui_link: process.env.RESET_PASS_UI_LINK
+    reset_pass_ui_link: process.env.RESET_PASS_UI_LINK,
+    cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
+    cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET
 }

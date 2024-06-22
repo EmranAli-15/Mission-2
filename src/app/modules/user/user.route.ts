@@ -6,10 +6,20 @@ import { adminValidations } from '../admin/admin.validation';
 import auth from '../../middlewares/auth';
 import { USER_ROLE } from './user.constant';
 import { UserValidation } from './user.validation';
+import { upload } from '../../utils/sendImgToCloudinary';
 
 const router = express.Router();
 
-router.post('/create-student', auth(USER_ROLE.admin), validateRequest(studentValidations.StudentValidationSchema), userControllers.createStudent);
+router.post(
+    '/create-student',
+    auth(USER_ROLE.admin),
+    upload.single('file'),
+    (req, res, next) => {
+        req.body = JSON.parse(req.body.data);
+        next();
+    },
+    validateRequest(studentValidations.StudentValidationSchema),
+    userControllers.createStudent);
 
 router.post('/create-admin', validateRequest(adminValidations.adminValidationSchema), userControllers.createAdmin);
 

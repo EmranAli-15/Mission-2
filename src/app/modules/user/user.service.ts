@@ -12,8 +12,9 @@ import { adminModel } from "../admin/admin.model";
 import { adminInterface } from "../admin/admin.interface";
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { courseFacultyModel } from "../course/course.model";
+import { sendImgToCloudinary } from "../../utils/sendImgToCloudinary";
 
-const createStudentIntoDB = async (password: string, studentData: Student) => {
+const createStudentIntoDB = async (file: any, password: string, studentData: Student) => {
     const userData: Partial<TUser> = {};
 
     userData.password = password || config.default_pass as string;
@@ -26,6 +27,10 @@ const createStudentIntoDB = async (password: string, studentData: Student) => {
         session.startTransaction();
         userData.id = await generateStudentId(admissionSemester);
 
+        const imageName = `${userData.id}${studentData.name.firstName}`;
+        const path = file.path;
+        const { secure_url } = await sendImgToCloudinary(imageName, path) as any;
+
         const newUser = await User.create([userData], { session });
 
         if (!newUser.length) {
@@ -34,6 +39,7 @@ const createStudentIntoDB = async (password: string, studentData: Student) => {
 
         studentData.id = newUser[0].id;
         studentData.user = newUser[0]._id;
+        studentData.profileImg = secure_url;
 
         const newStudent = await StudentModel.create([studentData], { session });
 
