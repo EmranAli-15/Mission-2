@@ -10,6 +10,8 @@ import AppError from "../../errors/AppError";
 import { generatedAdminId } from "../admin/admin.utils";
 import { adminModel } from "../admin/admin.model";
 import { adminInterface } from "../admin/admin.interface";
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { courseFacultyModel } from "../course/course.model";
 
 const createStudentIntoDB = async (password: string, studentData: Student) => {
     const userData: Partial<TUser> = {};
@@ -50,7 +52,6 @@ const createStudentIntoDB = async (password: string, studentData: Student) => {
     }
 };
 
-
 const createAdminIntoDB = async (password: string, adminData: adminInterface) => {
     const userData: Partial<TUser> = {};
 
@@ -89,8 +90,29 @@ const createAdminIntoDB = async (password: string, adminData: adminInterface) =>
     }
 }
 
+const getMeFromDB = async (token: string) => {
+
+    const decoded = jwt.verify(token, config.jwt_access_secret as string) as JwtPayload;
+
+    const { userId, role } = decoded;
+
+    let result = null;
+    if (role === 'student') {
+        result = await StudentModel.findOne({ id: userId });
+    };
+    if (role === 'admin') {
+        result = await adminModel.findOne({ id: userId });
+    };
+    if (role === 'faculty') {
+        result = await courseFacultyModel.findOne({ id: userId });
+    };
+
+    return result;
+};
+
 
 export const UserServices = {
     createStudentIntoDB,
-    createAdminIntoDB
+    createAdminIntoDB,
+    getMeFromDB
 }

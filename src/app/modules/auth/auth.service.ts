@@ -4,7 +4,6 @@ import { User } from "../user/user.model";
 import { loginUserInterface } from "./auth.interface";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import createToken from "./auth.utils";
-import { CLIENT_RENEG_LIMIT } from "tls";
 import sendEmail from "../../utils/sendEmail";
 
 const loginUser = async (payload: loginUserInterface) => {

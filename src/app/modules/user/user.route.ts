@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import { userControllers } from './user.controller';
 import validateRequest from '../../middlewares/validateRequest';
 import { studentValidations } from '../student/student.validation.zod';
@@ -11,5 +11,7 @@ const router = express.Router();
 router.post('/create-student', auth(USER_ROLE.admin), validateRequest(studentValidations.StudentValidationSchema), userControllers.createStudent);
 
 router.post('/create-admin', validateRequest(adminValidations.adminValidationSchema), userControllers.createAdmin);
+
+router.get('/me', auth('student', 'admin', 'faculty'), userControllers.getMe);
 
 export const UserRoutes = router;
