@@ -74,8 +74,6 @@ const createOfferedCourseIntoDB = async (payload: offeredCourseInterface) => {
         }
     ).select('days startTime endTime');
 
-    console.log(assignedSchedules);
-
     const newSchedule = {
         days, startTime, endTime
     };
@@ -91,10 +89,8 @@ const createOfferedCourseIntoDB = async (payload: offeredCourseInterface) => {
         };
     })
 
-    // const result = await offeredCourseModel.create({ ...payload, semesterRegistrationId });
-    // return result;
-
-    return null;
+    const result = await offeredCourseModel.create({ ...payload, semesterRegistrationId });
+    return result;
 };
 
 const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
