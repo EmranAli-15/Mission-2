@@ -12,6 +12,7 @@ import { semesterRegistrationRoutes } from './app/modules/semesterRegistration/s
 import { offeredCourseRoutes } from './app/modules/offeredCourse/offeredCourse.route';
 import { authRoutes } from './app/modules/auth/auth.route';
 import cookieParser from 'cookie-parser';
+import { enrollCourseRoutes } from './app/modules/enrollCourse/enrollCourse.route';
 
 const app = express();
 app.use(express.json());
@@ -32,6 +33,7 @@ app.use('/api/v1/course', courseRoutes);
 app.use('/api/v1/semester-registration', semesterRegistrationRoutes)
 app.use('/api/v1/offered-course', offeredCourseRoutes);
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/enroll-course', enrollCourseRoutes);
 
 // //////////////////////////////////////////////////////
 
