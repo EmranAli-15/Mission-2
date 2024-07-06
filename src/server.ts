@@ -8,9 +8,9 @@ let server: Server;
 async function main() {
 
     try {
-        await mongoose.connect(
-            `${config.database_url}`
-        );
+        await mongoose.connect(config.database_url as string, {
+            replicaSet: 'rs0' // Ensure this matches your replica set name
+          });
 
         server = app.listen(config.port, () => {
             console.log(`Example app listening on port ${config.port}`);

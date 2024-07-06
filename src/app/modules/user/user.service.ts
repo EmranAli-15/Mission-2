@@ -69,11 +69,10 @@ const createAdminIntoDB = async (password: string, adminData: adminInterface) =>
     try {
         session.startTransaction();
         userData.id = await generatedAdminId();
-
         const newUser = await User.create([userData], { session });
 
-        if (!newUser.length) {
-            throw new AppError(400, 'failed to create user');
+        if (newUser.length) {
+            throw new AppError(400, 'failed to create user ddddd');
         }
 
         adminData.id = newUser[0].id;
